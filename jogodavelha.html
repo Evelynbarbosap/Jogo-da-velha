@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Jogo da Velha</title>
+
+<style>
+    body{
+        border-radius: 30px;
+        background: #f2f2f2;
+        height: 100%;
+        text-align:center;
+    }
+    h1{
+        text-align: center;
+        font-family: Helvetica;
+        font-size: 80px;
+        text-transform: uppercase;
+        margin: 5px 0;
+        color: #000080;
+
+    }
+    h3{
+        color:#00004d;
+        float: left;
+        text-align: center;
+        margin-right: 600px;
+        font-family:Helvetica;
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+    #ixibir{
+        margin: auto;
+        margin-bottom: 60px;
+        width: 80px;
+        height: 150px;
+    }
+    img{
+        width:120px;
+        height:120px;
+    }
+    .quadrado{
+        width:150px;
+        height:130px;
+        border:2px solid #00004d;
+        float:left;
+        text-align: center;
+        padding-top: 20px;
+    }
+    #tabuleiro{
+        width:600px;
+        height:600px;
+        margin: auto 450px;
+    }
+</style>
+</head>
+<body>
+        <h1>Jogo da velha</h1>
+    <div id="ixibir">
+        <h3>Vez do Jogador:</h3>
+        <img src="" border="0px" heigth="50">
+    </div>
+    <div id="tabuleiro">
+        <div id="a1" class="quadrado" jogada=""></div>
+        <div id="a2" class="quadrado" jogada=""></div>
+        <div id="a3" class="quadrado" jogada=""></div>
+
+        <div id="b1" class="quadrado" jogada=""></div>
+        <div id="b2" class="quadrado" jogada=""></div>
+        <div id="b3" class="quadrado" jogada=""></div>
+
+        <div id="c1" class="quadrado" jogada=""></div>
+        <div id="c2" class="quadrado" jogada=""></div>
+        <div id="c3" class="quadrado" jogada=""></div>
+
+        </div>
+    </div>
+
+<script type="text/javascript">
+    const jogador1 = "RocketRaccoon";
+const jogador2 = "Groot";
+var vezjogador = jogador1;
+var gameOver = false;
+
+atualizaIxibir();
+iniciarQuadrado();
+
+
+function atualizaIxibir(){
+
+    if(gameOver){
+        return;
+    }
+    if(vezjogador == jogador1){
+
+        var jogador = document.querySelectorAll("div#ixibir img")[0];
+        jogador.setAttribute("src","http://www.pngmart.com/files/2/Rocket-Raccoon-PNG-Clipart.png");
+    }else{
+        var jogador = document.querySelectorAll("div#ixibir img")[0];
+        jogador.setAttribute("src","https://img00.deviantart.net/5d31/i/2017/125/c/3/baby_groot_by_pencilhead7-db86b3y.png");
+    }
+}
+
+function iniciarQuadrado(){
+    var quadrados = document.getElementsByClassName("quadrado");
+    for(var i = 0; i < quadrados.length; i++){
+
+        quadrados[i].addEventListener("click", function(){
+            if(gameOver){retun;}
+
+            if(this.getElementsByTagName("img").length == 0){
+                if (vezjogador == jogador1){
+
+                    this.innerHTML = "<img src='http://www.pngmart.com/files/2/Rocket-Raccoon-PNG-Clipart.png'>"
+                    this.setAttribute("jogada", jogador1);
+                    vezjogador = jogador2;
+                }else{
+
+                    this.innerHTML = "<img src='https://img00.deviantart.net/5d31/i/2017/125/c/3/baby_groot_by_pencilhead7-db86b3y.png'>"
+                    this.setAttribute("jogada", jogador2);
+                    vezjogador = jogador1;
+                }
+                atualizaIxibir();
+                confirmarVencedor();
+         }
+      });
+  }
+}
+
+async function confirmarVencedor(){
+
+    var a1 = document.getElementById("a1").getAttribute("jogada");
+    var a2 = document.getElementById("a2").getAttribute("jogada");
+    var a3 = document.getElementById("a3").getAttribute("jogada");
+
+    var b1 = document.getElementById("b1").getAttribute("jogada");
+    var b2 = document.getElementById("b2").getAttribute("jogada");
+    var b3 = document.getElementById("b3").getAttribute("jogada");
+
+    var c1 = document.getElementById("c1").getAttribute("jogada");
+    var c2 = document.getElementById("c2").getAttribute("jogada");
+    var c3 = document.getElementById("c3").getAttribute("jogada");
+
+    var vencedor = "";
+
+    if(((a1 == b1 && a1 == c1 && a1 != "") || (a1 == a2 && a1 == a3 && a1 != "") || (a1 == b2 && a1 == c3 && a1 != "")) && a1 !=""){
+        vencedor = a1;
+
+    }else if((b2 == b1 && b2 == b3 && b2 != "") || (b2 == a2 && b2 == c2 && b2 != "") || (b2 == a3 && b2 == c1 && b2 != "")){
+        vencedor = b2;
+
+    }else if(((c3 == c2 && c3 == c1) || ( c3 == a3 && c3 == b3)) && c3 != ""){
+        vencedor = c3;
+    }
+    if (vencedor != ""){
+        gameOver = true;
+
+        await sleep(50); //para o alert n aparecer antes do meu click
+        alert("O vencedor foi: '" + vencedor + "'");
+        
+    }
+}
+
+function sleep(ms){
+
+    return new Promise(resolve => setTimeout(resolve,ms));
+
+}
+
+
+</script>
+</body>
+</html>
